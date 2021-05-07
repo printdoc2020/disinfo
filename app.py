@@ -29,7 +29,11 @@ def read_data(n_tops):
 	df["tweet_account"] = df.tweetid.map(lambda x: x.split("/status/")[0].split("/")[-1])
 
 	df_tweet = pd.read_csv("data/tweet_parse_all_text_cols_and_processed_2cols.csv")
-	return df, df_tweet 
+
+	with open('data/keywords.json') as json_file:
+		topics_dict = json.load(json_file)
+
+	return df, df_tweet, topics_dict
 
 
 
@@ -50,7 +54,7 @@ n_tweets = 1000
 
 
 n_tops = st.sidebar.selectbox('Get top...',(1,2,3,4,5), 2)
-df, df_tweet = read_data(n_tops)
+df, df_tweet, topics_dict = read_data(n_tops)
 
 st.sidebar.title('Show...')
 topic = st.sidebar.selectbox('Select by Topic',(*df["top1"].unique(), ALL))
@@ -96,21 +100,20 @@ target_tweet = df_tweet[df_tweet["tweetid"]==tweetid]
 
 processed_text = target_tweet["all_text_processed"].values[0] if target_tweet["all_text_processed"].values else ""
 
-if len(target_tweet)>0:
-	st.markdown("**All texts (Tweet content, article content,...) after processing:** " + processed_text)
 
-with open('data/keywords.json') as json_file:
-	topics_dict = json.load(json_file)
 
-try:
+
+
+if tweetid and df[df["tweetid"]==tweetid].shape[0]>0:
+	if len(target_tweet)>0:
+		st.markdown("**All texts (Tweet content, article content,...) after processing:** " + processed_text)
+
 	for i in range(n_tops):
 		st.write("-------")
 		st.markdown(f"**Topic {i+1}:** "+ str(df[df["tweetid"]==tweetid][f"top{i+1}"].values[0]))
 		all_keywords_in_the_topic = topics_dict[df[df["tweetid"]==tweetid][f"top{i+1}"].values[0]]
 		st.markdown("**Keywords appearing:** "+ get_num_words(processed_text, all_keywords_in_the_topic,return_keys=True))
 		st.write("-------")
-except:
-	pass
 
 
 
