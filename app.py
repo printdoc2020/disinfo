@@ -36,6 +36,14 @@ def read_data(n_tops):
 	return df, df_tweet, topics_dict
 
 
+st.set_page_config(
+	 page_title="Topics Dictionary",
+	 page_icon="random",
+	 layout="wide",
+	 initial_sidebar_state="expanded",
+ )
+
+
 
 st.title('Topics Using Dictionary')
 st.write("Last Updated: May 7, 2021") 
