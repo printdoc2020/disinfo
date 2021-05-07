@@ -101,7 +101,7 @@ st.text(f"Show {df.shape[0]} tweets")
 
 
 
-tweetid = st.text_input('Looking for tweetid:', "")
+tweetid = st.text_input('Looking for tweetid: (ex: https://twitter.com/thetech/status/1299806383303516160)', "")
 st.write('tweetid:', tweetid)
 
 target_tweet = df_tweet[df_tweet["tweetid"]==tweetid]
