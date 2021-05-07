@@ -100,9 +100,8 @@ st.text(f"Show {df.shape[0]} tweets")
 
 
 
-
-tweetid = st.text_input('Looking for tweetid: (ex: https://twitter.com/thetech/status/1299806383303516160)', "")
-st.write('tweetid:', tweetid)
+st.markdown("Double click on a _**tweetid**_ in the table above, then copy and paste here to see more detail of the tweet.")
+tweetid = st.text_input('Ex: https://twitter.com/thetech/status/1299806383303516160', "")
 
 target_tweet = df_tweet[df_tweet["tweetid"]==tweetid]
 
@@ -113,6 +112,8 @@ processed_text = target_tweet["all_text_processed"].values[0] if target_tweet["a
 
 
 if tweetid and df[df["tweetid"]==tweetid].shape[0]>0:
+	st.write('tweetid:', tweetid)
+
 	if len(target_tweet)>0:
 		st.markdown("**All texts (Tweet content, article content,...) after processing:** " + processed_text)
 
